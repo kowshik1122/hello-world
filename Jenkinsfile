@@ -18,6 +18,13 @@ pipeline {
         }
          stage('4') {
             steps {
+             withSonarQubeEnv('sonarqube-8.9.10') {
+                sh "mvn sonar:sonar"
+               }   
+            }
+        }
+         stage('5') {
+            steps {
                 deploy adapters: [tomcat9(credentialsId: 'user_deployer', path: '', url: 'http://20.55.84.35:9090')], contextPath: null, war: '**/*.war'
             }
         }
